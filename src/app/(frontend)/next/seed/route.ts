@@ -1,31 +1,34 @@
-import { createLocalReq, getPayload } from 'payload'
-import { seed } from '@/endpoints/seed'
-import config from '@payload-config'
-import { headers } from 'next/headers'
+import { seed } from '@payloadcms/db-seed'
+import payload from 'payload'
+import { getPayloadClient } from '../../../getPayload'
+import { createLocalReq } from '@payloadcms/next/utilities'
 
-export const maxDuration = 60 // This function can run for a maximum of 60 seconds
+// This route can be requested locally to seed the database
+// You can fetch this route from within a script, or call it manually via HTTP
+// For example, you can run `curl http://localhost:3000/api/seed` while your app is running
+export async function GET() {
+  const payloadClient = await getPayloadClient()
 
-export async function POST(): Promise<Response> {
-  const payload = await getPayload({ config })
-  const requestHeaders = await headers()
-
-  // Authenticate by passing request headers
-  const { user } = await payload.auth({ headers: requestHeaders })
+  const user = await payloadClient.findByID({
+    collection: 'users',
+    id: '1', // O el ID que corresponda a un usuario real
+  })
 
   if (!user) {
-    return new Response('Action forbidden.', { status: 403 })
+    return new Response('User not found', { status: 404 })
   }
 
-  try {
-    // Create a Payload request object to pass to the Local API for transactions
-    // At this point you should pass in a user, locale, and any other context you need for the Local API
-    const payloadReq = await createLocalReq({ user }, payload)
-
-    await seed({ payload, req: payloadReq })
-
-    return Response.json({ success: true })
-  } catch (e) {
-    payload.logger.error({ err: e, message: 'Error seeding data' })
-    return new Response('Error seeding data.', { status: 500 })
+  // Corrige el problema de typescript con sessions (null vs undefined)
+  const safeUser = {
+    ...user,
+    sessions: user.sessions ?? undefined,
   }
+
+  const payloadReq = await createLocalReq({ user: safeUser }, payload)
+
+  await seed({ payload, req: payloadReq })
+
+  return new Response('Seeding complete.', {
+    status: 200,
+  })
 }

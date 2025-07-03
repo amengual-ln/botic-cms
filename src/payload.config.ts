@@ -10,12 +10,14 @@ import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
+import { Careers } from './collections/Careers'
 import { Users } from './collections/Users'
-import { Footer } from './Footer/config'
-import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+
+import { es } from '@payloadcms/translations/languages/es'
+import { en } from '@payloadcms/translations/languages/en'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -64,9 +66,8 @@ export default buildConfig({
       connectionString: process.env.POSTGRES_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Posts, Careers, Media, Categories, Pages, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
   plugins: [
     ...plugins,
     vercelBlobStorage({
@@ -95,5 +96,9 @@ export default buildConfig({
       },
     },
     tasks: [],
+  },
+  i18n: {
+    supportedLanguages: { es, en },
+    fallbackLanguage: 'es',
   },
 })

@@ -1,5 +1,11 @@
 import PageTemplate, { generateMetadata } from './[slug]/page'
 
-export default PageTemplate
+import { redirect } from 'next/navigation'
 
-export { generateMetadata }
+export default function Page() {
+  redirect('/admin')
+}
+
+// export default PageTemplate
+
+// export { generateMetadata }
