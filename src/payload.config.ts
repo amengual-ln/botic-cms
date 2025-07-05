@@ -19,6 +19,13 @@ import { en } from '@payloadcms/translations/languages/en'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const allowedOrigins = [
+  getURL(),
+  'https://www.boticpartners.com/',
+  'http://localhost:3000',
+  'http://localhost:3001',
+]
+
 export default buildConfig({
   admin: {
     importMap: {
@@ -55,7 +62,7 @@ export default buildConfig({
     },
   }),
   collections: [Posts, Careers, Media, Users],
-  cors: [getURL()].filter(Boolean),
+  cors: allowedOrigins,
   plugins: [
     ...plugins,
     vercelBlobStorage({
