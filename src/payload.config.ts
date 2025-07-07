@@ -21,7 +21,8 @@ const dirname = path.dirname(filename)
 
 const allowedOrigins = [
   getURL(),
-  'https://www.boticpartners.com/',
+  'https://boticpartners.com',
+  'https://www.boticpartners.com',
   'http://localhost:3000',
   'http://localhost:3001',
 ]
