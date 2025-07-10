@@ -16,8 +16,26 @@ export const Careers: CollectionConfig = {
       type: 'text',
     },
     {
-      name: 'area',
-      type: 'text',
+      name: 'sector',
+      type: 'select',
+      options: [
+        {
+          label: 'Software (AI and development)',
+          value: 'software',
+        },
+        {
+          label: 'Hardware (Deep Tech)',
+          value: 'hardware',
+        },
+        {
+          label: 'Construction & Real Estate',
+          value: 'construction',
+        },
+        {
+          label: 'Logistics',
+          value: 'logistics',
+        },
+      ],
     },
     {
       name: 'company',
