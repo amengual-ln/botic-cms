@@ -42,6 +42,10 @@ export const Careers: CollectionConfig = {
       type: 'text',
     },
     {
+      name: 'company_url',
+      type: 'text',
+    },
+    {
       name: 'description',
       type: 'richText',
       editor: lexicalEditor(),
