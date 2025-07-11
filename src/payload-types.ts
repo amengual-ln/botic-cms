@@ -158,7 +158,7 @@ export interface Career {
   id: number;
   ref?: string | null;
   position?: string | null;
-  sector?: ('software' | 'hardware' | 'construction' | 'logistics') | null;
+  sector?: ('software' | 'hardware' | 'construction' | 'logistics' | 'sales') | null;
   company?: string | null;
   company_url?: string | null;
   description?: {
@@ -181,6 +181,12 @@ export interface Career {
   requirements?:
     | {
         requirement?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  benefits?:
+    | {
+        benefit?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -406,6 +412,12 @@ export interface CareersSelect<T extends boolean = true> {
     | T
     | {
         requirement?: T;
+        id?: T;
+      };
+  benefits?:
+    | T
+    | {
+        benefit?: T;
         id?: T;
       };
   linkedIn?: T;
