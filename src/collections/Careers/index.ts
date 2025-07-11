@@ -35,6 +35,10 @@ export const Careers: CollectionConfig = {
           label: 'Logistics',
           value: 'logistics',
         },
+        {
+          label: 'Sales',
+          value: 'sales',
+        },
       ],
     },
     {
