@@ -73,6 +73,16 @@ export const Careers: CollectionConfig = {
       ],
     },
     {
+      name: 'benefits',
+      type: 'array',
+      fields: [
+        {
+          name: 'benefit',
+          type: 'text',
+        },
+      ],
+    },
+    {
       name: 'linkedIn',
       type: 'text',
     },
