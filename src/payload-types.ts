@@ -158,8 +158,9 @@ export interface Career {
   id: number;
   ref?: string | null;
   position?: string | null;
-  area?: string | null;
+  sector?: ('software' | 'hardware' | 'construction' | 'logistics') | null;
   company?: string | null;
+  company_url?: string | null;
   description?: {
     root: {
       type: string;
@@ -395,8 +396,9 @@ export interface PostsSelect<T extends boolean = true> {
 export interface CareersSelect<T extends boolean = true> {
   ref?: T;
   position?: T;
-  area?: T;
+  sector?: T;
   company?: T;
+  company_url?: T;
   description?: T;
   location?: T;
   salary?: T;
