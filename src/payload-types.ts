@@ -161,6 +161,7 @@ export interface Career {
   sector?: ('software' | 'hardware' | 'construction' | 'logistics' | 'sales') | null;
   company?: string | null;
   company_url?: string | null;
+  'Ocultar empresa'?: boolean | null;
   description?: {
     root: {
       type: string;
@@ -178,6 +179,7 @@ export interface Career {
   } | null;
   location?: string | null;
   salary?: string | null;
+  'Ocultar salario'?: boolean | null;
   requirements?:
     | {
         requirement?: string | null;
@@ -405,9 +407,11 @@ export interface CareersSelect<T extends boolean = true> {
   sector?: T;
   company?: T;
   company_url?: T;
+  'Ocultar empresa'?: T;
   description?: T;
   location?: T;
   salary?: T;
+  'Ocultar salario'?: T;
   requirements?:
     | T
     | {

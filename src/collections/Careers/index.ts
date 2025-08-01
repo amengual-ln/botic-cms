@@ -47,7 +47,12 @@ export const Careers: CollectionConfig = {
     },
     {
       name: 'company_url',
+      label: 'Enlace a la web de la empresa (De este se infiere el logo)',
       type: 'text',
+    },
+    {
+      name: 'Ocultar empresa',
+      type: 'checkbox',
     },
     {
       name: 'description',
@@ -61,6 +66,10 @@ export const Careers: CollectionConfig = {
     {
       name: 'salary',
       type: 'text',
+    },
+    {
+      name: 'Ocultar salario',
+      type: 'checkbox',
     },
     {
       name: 'requirements',
@@ -84,6 +93,7 @@ export const Careers: CollectionConfig = {
     },
     {
       name: 'linkedIn',
+      label: 'LinkedIn (Enlace a la búsqueda o publicación en LinkedIn)',
       type: 'text',
     },
     {
