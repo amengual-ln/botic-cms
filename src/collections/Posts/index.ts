@@ -1,44 +1,94 @@
 import type { CollectionConfig } from 'payload'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { lexicalEditor, BlocksFeature } from '@payloadcms/richtext-lexical'
+import { VideoEmbed } from '../../blocks/VideoEmbed/config'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
-  access: {
-    read: () => true,
-  },
+  access: { read: () => true },
   fields: [
+    { name: 'title', type: 'text' },
+    { name: 'excerpt', type: 'text' },
+
     {
-      name: 'title',
-      type: 'text',
+      name: 'heroType',
+      type: 'select',
+      defaultValue: 'image',
+      options: [
+        { label: 'Image', value: 'image' },
+        { label: 'Video', value: 'video' },
+      ],
     },
+
     {
-      name: 'excerpt',
-      type: 'text',
-    },
-    {
-      name: 'content',
-      type: 'richText',
-      editor: lexicalEditor(),
-    },
-    {
-      name: 'tags',
-      type: 'array',
+      name: 'heroVideo',
+      type: 'group',
+      admin: {
+        condition: (data) => data?.heroType === 'video',
+      },
       fields: [
+        { name: 'heading', type: 'text', label: 'Título (centrado)' },
         {
-          name: 'tag',
-          type: 'text',
+          name: 'intro',
+          type: 'richText',
+          label: 'Descripción (RichText)',
+          editor: lexicalEditor(),
+        },
+
+        {
+          name: 'provider',
+          type: 'select',
+          defaultValue: 'youtube',
+          options: [
+            { label: 'YouTube', value: 'youtube' },
+            { label: 'Vimeo', value: 'vimeo' },
+            { label: 'Custom (player URL)', value: 'custom' },
+          ],
+          required: true,
+        },
+        { name: 'url', type: 'text', required: true, label: 'URL del video' },
+        { name: 'title', type: 'text', label: 'Título accesible' },
+        { name: 'start', type: 'number', label: 'Segundos de inicio (opcional)' },
+        { name: 'allowFullScreen', type: 'checkbox', defaultValue: true },
+        {
+          name: 'aspect',
+          type: 'select',
+          defaultValue: '16:9',
+          options: [
+            { label: '16:9', value: '16:9' },
+            { label: '4:3', value: '4:3' },
+            { label: '1:1', value: '1:1' },
+          ],
         },
       ],
     },
+
+    {
+      name: 'content',
+      type: 'richText',
+      editor: lexicalEditor({
+        features: ({ defaultFeatures }) => [
+          ...defaultFeatures,
+          BlocksFeature({ blocks: [VideoEmbed] }),
+        ],
+      }),
+    },
+
+    {
+      name: 'tags',
+      type: 'array',
+      fields: [{ name: 'tag', type: 'text' }],
+    },
     {
       name: 'image',
-      type: 'text',
+      label: 'Card / Cover Image',
+      type: 'upload',
+      relationTo: 'media',
+      required: false,
     },
   ],
-  admin: {
-    useAsTitle: 'title',
-  },
+  admin: { useAsTitle: 'title' },
 }
+
 
 // import type { CollectionConfig } from 'payload'
 

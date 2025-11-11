@@ -125,6 +125,31 @@ export interface Post {
   id: number;
   title?: string | null;
   excerpt?: string | null;
+  heroType?: ('image' | 'video') | null;
+  heroVideo?: {
+    heading?: string | null;
+    intro?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    provider: 'youtube' | 'vimeo' | 'custom';
+    url: string;
+    title?: string | null;
+    start?: number | null;
+    allowFullScreen?: boolean | null;
+    aspect?: ('16:9' | '4:3' | '1:1') | null;
+  };
   content?: {
     root: {
       type: string;
@@ -146,54 +171,7 @@ export interface Post {
         id?: string | null;
       }[]
     | null;
-  image?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "careers".
- */
-export interface Career {
-  id: number;
-  ref?: string | null;
-  position?: string | null;
-  sector?: ('software' | 'hardware' | 'construction' | 'logistics' | 'sales') | null;
-  company?: string | null;
-  company_url?: string | null;
-  'Ocultar empresa'?: boolean | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  location?: string | null;
-  salary?: string | null;
-  'Ocultar salario'?: boolean | null;
-  requirements?:
-    | {
-        requirement?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  benefits?:
-    | {
-        benefit?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  linkedIn?: string | null;
-  status?: ('active' | 'closed') | null;
+  image?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -288,6 +266,55 @@ export interface Media {
       filename?: string | null;
     };
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "careers".
+ */
+export interface Career {
+  id: number;
+  ref?: string | null;
+  position?: string | null;
+  sector?: ('software' | 'hardware' | 'construction' | 'logistics' | 'sales') | null;
+  company?: string | null;
+  company_url?: string | null;
+  logo?: (number | null) | Media;
+  'Ocultar empresa'?: boolean | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  location?: string | null;
+  salary?: string | null;
+  currency_code?: ('EUR' | 'USD') | null;
+  'Ocultar salario'?: boolean | null;
+  requirements?:
+    | {
+        requirement?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  benefits?:
+    | {
+        benefit?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  linkedIn?: string | null;
+  status?: ('active' | 'closed') | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -386,6 +413,19 @@ export interface PayloadMigration {
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
   excerpt?: T;
+  heroType?: T;
+  heroVideo?:
+    | T
+    | {
+        heading?: T;
+        intro?: T;
+        provider?: T;
+        url?: T;
+        title?: T;
+        start?: T;
+        allowFullScreen?: T;
+        aspect?: T;
+      };
   content?: T;
   tags?:
     | T
@@ -407,10 +447,12 @@ export interface CareersSelect<T extends boolean = true> {
   sector?: T;
   company?: T;
   company_url?: T;
+  logo?: T;
   'Ocultar empresa'?: T;
   description?: T;
   location?: T;
   salary?: T;
+  currency_code?: T;
   'Ocultar salario'?: T;
   requirements?:
     | T

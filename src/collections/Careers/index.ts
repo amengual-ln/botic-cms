@@ -7,89 +7,61 @@ export const Careers: CollectionConfig = {
     read: () => true,
   },
   fields: [
-    {
-      name: 'ref',
-      type: 'text',
-    },
-    {
-      name: 'position',
-      type: 'text',
-    },
+    { name: 'ref', type: 'text' },
+    { name: 'position', type: 'text' },
     {
       name: 'sector',
       type: 'select',
       options: [
-        {
-          label: 'Software (AI and development)',
-          value: 'software',
-        },
-        {
-          label: 'Hardware (Deep Tech)',
-          value: 'hardware',
-        },
-        {
-          label: 'Construction & Real Estate',
-          value: 'construction',
-        },
-        {
-          label: 'Logistics',
-          value: 'logistics',
-        },
-        {
-          label: 'Sales',
-          value: 'sales',
-        },
+        { label: 'Software (AI and development)', value: 'software' },
+        { label: 'Hardware (Deep Tech)', value: 'hardware' },
+        { label: 'Construction & Real Estate', value: 'construction' },
+        { label: 'Logistics', value: 'logistics' },
+        { label: 'Sales', value: 'sales' },
       ],
     },
-    {
-      name: 'company',
-      type: 'text',
-    },
+    { name: 'company', type: 'text' },
     {
       name: 'company_url',
       label: 'Enlace a la web de la empresa (De este se infiere el logo)',
       type: 'text',
     },
+
     {
-      name: 'Ocultar empresa',
-      type: 'checkbox',
+      name: 'logo',
+      label: 'Logo (subir imagen)',
+      type: 'upload',
+      relationTo: 'media',
     },
+
+    { name: 'Ocultar empresa', type: 'checkbox' },
     {
       name: 'description',
       type: 'richText',
       editor: lexicalEditor(),
     },
+    { name: 'location', type: 'text', localized: true },
+    { name: 'salary', type: 'text' },
     {
-      name: 'location',
-      type: 'text',
+      name: 'currency_code',
+      label: 'Moneda',
+      type: 'select',
+      options: [
+        { label: 'EUR (€)', value: 'EUR' },
+        { label: 'USD ($)', value: 'USD' },
+      ],
+      defaultValue: 'EUR',
     },
-    {
-      name: 'salary',
-      type: 'text',
-    },
-    {
-      name: 'Ocultar salario',
-      type: 'checkbox',
-    },
+    { name: 'Ocultar salario', type: 'checkbox' },
     {
       name: 'requirements',
       type: 'array',
-      fields: [
-        {
-          name: 'requirement',
-          type: 'text',
-        },
-      ],
+      fields: [{ name: 'requirement', type: 'text' }],
     },
     {
       name: 'benefits',
       type: 'array',
-      fields: [
-        {
-          name: 'benefit',
-          type: 'text',
-        },
-      ],
+      fields: [{ name: 'benefit', type: 'text' }],
     },
     {
       name: 'linkedIn',
@@ -100,14 +72,8 @@ export const Careers: CollectionConfig = {
       name: 'status',
       type: 'select',
       options: [
-        {
-          label: 'Active',
-          value: 'active',
-        },
-        {
-          label: 'Closed',
-          value: 'closed',
-        },
+        { label: 'Active', value: 'active' },
+        { label: 'Closed', value: 'closed' },
       ],
     },
   ],
