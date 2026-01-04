@@ -71,6 +71,8 @@ export const Careers: CollectionConfig = {
     {
       name: 'status',
       type: 'select',
+      required: true,
+      defaultValue: 'active',
       options: [
         { label: 'Active', value: 'active' },
         { label: 'Closed', value: 'closed' },

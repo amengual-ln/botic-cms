@@ -1,5 +1,6 @@
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
+import { NewsletterSubscribers } from './collections/NewsletterSubscribers'
 
 import sharp from 'sharp' // sharp-import
 import path from 'path'
@@ -62,7 +63,7 @@ export default buildConfig({
       connectionString: process.env.POSTGRES_URL || '',
     },
   }),
-  collections: [Posts, Careers, Media, Users],
+  collections: [Posts, Careers, Media, Users, NewsletterSubscribers],
   cors: allowedOrigins,
   plugins: [
     ...plugins,
