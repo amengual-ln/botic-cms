@@ -72,6 +72,8 @@ export interface Config {
     media: Media;
     users: User;
     'newsletter-subscribers': NewsletterSubscriber;
+    talent: Talent;
+    'acquisition-leads': AcquisitionLead;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -83,6 +85,8 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'newsletter-subscribers': NewsletterSubscribersSelect<false> | NewsletterSubscribersSelect<true>;
+    talent: TalentSelect<false> | TalentSelect<true>;
+    'acquisition-leads': AcquisitionLeadsSelect<false> | AcquisitionLeadsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -355,6 +359,35 @@ export interface NewsletterSubscriber {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "talent".
+ */
+export interface Talent {
+  id: number;
+  name: string;
+  email: string;
+  message: string;
+  source?: string | null;
+  status: 'new' | 'contacted' | 'closed';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "acquisition-leads".
+ */
+export interface AcquisitionLead {
+  id: number;
+  name: string;
+  company: string;
+  phone: string;
+  email: string;
+  source?: string | null;
+  status: 'new' | 'contacted' | 'closed';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -379,6 +412,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'newsletter-subscribers';
         value: number | NewsletterSubscriber;
+      } | null)
+    | ({
+        relationTo: 'talent';
+        value: number | Talent;
+      } | null)
+    | ({
+        relationTo: 'acquisition-leads';
+        value: number | AcquisitionLead;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -609,6 +650,33 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface NewsletterSubscribersSelect<T extends boolean = true> {
   email?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "talent_select".
+ */
+export interface TalentSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  message?: T;
+  source?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "acquisition-leads_select".
+ */
+export interface AcquisitionLeadsSelect<T extends boolean = true> {
+  name?: T;
+  company?: T;
+  phone?: T;
+  email?: T;
+  source?: T;
+  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }

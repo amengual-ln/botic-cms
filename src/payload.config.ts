@@ -1,8 +1,10 @@
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 import { NewsletterSubscribers } from './collections/NewsletterSubscribers'
+import { Talent } from './collections/Talent'
+import { AcquisitionLeads } from './collections/AcquisitionLeads'
 
-import sharp from 'sharp' // sharp-import
+import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
@@ -24,8 +26,10 @@ const allowedOrigins = [
   getURL(),
   'https://boticpartners.com',
   'https://www.boticpartners.com',
+  'https://acquisition.boticpartners.com',
   'http://localhost:3000',
   'http://localhost:3001',
+  "http://localhost:3002",
 ]
 
 export default buildConfig({
@@ -36,64 +40,64 @@ export default buildConfig({
     user: Users.slug,
     livePreview: {
       breakpoints: [
-        {
-          label: 'Mobile',
-          name: 'mobile',
-          width: 375,
-          height: 667,
-        },
-        {
-          label: 'Tablet',
-          name: 'tablet',
-          width: 768,
-          height: 1024,
-        },
-        {
-          label: 'Desktop',
-          name: 'desktop',
-          width: 1440,
-          height: 900,
-        },
+        { label: 'Mobile', name: 'mobile', width: 375, height: 667 },
+        { label: 'Tablet', name: 'tablet', width: 768, height: 1024 },
+        { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
       ],
     },
   },
-  // This config helps us configure global or default features that the other editors can inherit
+
   db: vercelPostgresAdapter({
     pool: {
       connectionString: process.env.POSTGRES_URL || '',
     },
   }),
-  collections: [Posts, Careers, Media, Users, NewsletterSubscribers],
+
+  collections: [Posts, Careers, Media, Users, NewsletterSubscribers, Talent, AcquisitionLeads],
+
   cors: allowedOrigins,
+  csrf: allowedOrigins,
+
+  email: {
+    fromName: process.env.EMAIL_FROM_NAME || 'Botic Partners',
+    fromAddress: process.env.EMAIL_FROM_ADDRESS || 'no-reply@boticpartners.com',
+    transportOptions: {
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT || 587),
+      secure: process.env.SMTP_SECURE === 'true',
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    },
+  },
+
   plugins: [
     ...plugins,
     vercelBlobStorage({
-      collections: {
-        media: true,
-      },
+      collections: { media: true },
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
     }),
   ],
+
   secret: process.env.PAYLOAD_SECRET,
   sharp,
+
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
+
   jobs: {
     access: {
       run: ({ req }: { req: PayloadRequest }): boolean => {
-        // Allow logged in users to execute this endpoint (default)
         if (req.user) return true
-
-        // If there is no logged in user, then check
-        // for the Vercel Cron secret to be present as an
-        // Authorization header:
         const authHeader = req.headers.get('authorization')
         return authHeader === `Bearer ${process.env.CRON_SECRET}`
       },
     },
     tasks: [],
   },
+
   i18n: {
     supportedLanguages: { es, en },
     fallbackLanguage: 'es',
