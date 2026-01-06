@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 /**
- * Public-facing newsletter signups.
+ * Public-facing newsletter signups
  * - Public can CREATE (subscribe)
  * - Only authenticated users can READ/UPDATE/DELETE
  */
