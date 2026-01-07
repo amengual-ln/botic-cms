@@ -1,10 +1,10 @@
-import type { CollectionConfig } from "payload";
+import type { CollectionConfig } from 'payload'
 
 export const Talent: CollectionConfig = {
-  slug: "talent",
+  slug: 'talent',
   admin: {
-    useAsTitle: "email",
-    defaultColumns: ["name", "email", "source", "status", "createdAt"],
+    useAsTitle: 'email',
+    defaultColumns: ['name', 'email', 'source', 'status', 'createdAt'],
   },
   access: {
     create: () => true,
@@ -12,47 +12,50 @@ export const Talent: CollectionConfig = {
     update: ({ req }) => Boolean(req.user),
     delete: ({ req }) => Boolean(req.user),
   },
-
   hooks: {
     afterChange: [
       async ({ doc, operation, req }) => {
-        if (operation !== "create") return;
+        if (operation !== 'create') return
 
-        const to = process.env.TALENT_NOTIFY_EMAIL || "admin@boticpartners.com";
+        const to = process.env.TALENT_NOTIFY_EMAIL || 'admin@boticpartners.com'
 
-        await req.payload.sendEmail({
-          to,
-          subject: `[Talent] New submission — ${doc.name}`,
-          text: [
-            `Name: ${doc.name}`,
-            `Email: ${doc.email}`,
-            `Source: ${doc.source ?? "-"}`,
-            ``,
-            `Message:`,
-            doc.message,
-          ].join("\n"),
-        });
+        try {
+          await req.payload.sendEmail({
+            to,
+            subject: `[Talent] New submission — ${doc.name}`,
+            text: [
+              `Name: ${doc.name}`,
+              `Email: ${doc.email}`,
+              `Source: ${doc.source ?? '-'}`,
+              ``,
+              `Message:`,
+              doc.message,
+            ].join('\n'),
+          })
+        } catch (err) {
+          req.payload.logger.error(err, 'Talent email notification failed')
+        }
       },
     ],
   },
 
   fields: [
-    { name: "name", type: "text", required: true },
-    { name: "email", type: "email", required: true, index: true },
-    { name: "message", type: "textarea", required: true },
-    { name: "source", type: "text" },
+    { name: 'name', type: 'text', required: true },
+    { name: 'email', type: 'email', required: true, index: true },
+    { name: 'message', type: 'textarea', required: true },
+    { name: 'source', type: 'text' },
     {
-      name: "status",
-      type: "select",
+      name: 'status',
+      type: 'select',
       required: true,
-      defaultValue: "new",
+      defaultValue: 'new',
       options: [
-        { label: "New", value: "new" },
-        { label: "Contacted", value: "contacted" },
-        { label: "Closed", value: "closed" },
+        { label: 'New', value: 'new' },
+        { label: 'Contacted', value: 'contacted' },
+        { label: 'Closed', value: 'closed' },
       ],
-      admin: { position: "sidebar" },
+      admin: { position: 'sidebar' },
     },
   ],
   timestamps: true,
-};
+}
