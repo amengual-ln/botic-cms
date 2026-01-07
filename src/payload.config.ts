@@ -9,6 +9,9 @@ import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
+import nodemailer from 'nodemailer'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
+
 import { Media } from './collections/Media'
 import { Posts } from './collections/Posts'
 import { Careers } from './collections/Careers'
@@ -29,7 +32,7 @@ const allowedOrigins = [
   'https://acquisition.boticpartners.com',
   'http://localhost:3000',
   'http://localhost:3001',
-  "http://localhost:3002",
+  'http://localhost:3002',
 ]
 
 export default buildConfig({
@@ -58,10 +61,10 @@ export default buildConfig({
   cors: allowedOrigins,
   csrf: allowedOrigins,
 
-  email: {
-    fromName: process.env.EMAIL_FROM_NAME || 'Botic Partners',
-    fromAddress: process.env.EMAIL_FROM_ADDRESS || 'no-reply@boticpartners.com',
-    transportOptions: {
+  email: nodemailerAdapter({
+    defaultFromName: process.env.EMAIL_FROM_NAME || 'Botic Partners',
+    defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || 'no-reply@boticpartners.com',
+    transport: nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: Number(process.env.SMTP_PORT || 587),
       secure: process.env.SMTP_SECURE === 'true',
@@ -69,8 +72,8 @@ export default buildConfig({
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
-    },
-  },
+    }),
+  }),
 
   plugins: [
     ...plugins,
