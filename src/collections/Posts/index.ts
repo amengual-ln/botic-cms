@@ -4,7 +4,12 @@ import { VideoEmbed } from '../../blocks/VideoEmbed/config'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
-  access: { read: () => true },
+  access: {
+    read: () => true,
+    create: ({ req }) => Boolean(req.user),
+    update: ({ req }) => Boolean(req.user),
+    delete: ({ req }) => Boolean(req.user),
+  },
   fields: [
     { name: 'title', type: 'text' },
     { name: 'excerpt', type: 'text' },
@@ -88,7 +93,6 @@ export const Posts: CollectionConfig = {
   ],
   admin: { useAsTitle: 'title' },
 }
-
 
 // import type { CollectionConfig } from 'payload'
 

@@ -9,7 +9,7 @@
 /**
  * Supported timezones in IANA format.
  *
- * This interface was referenced by `Config`'s JSON-Schema!
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "supportedTimezones".
  */
 export type SupportedTimezones =
