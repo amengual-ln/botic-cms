@@ -302,6 +302,9 @@ export interface Career {
     [k: string]: unknown;
   } | null;
   location?: string | null;
+  /**
+   * Ejemplos: "100000", "60000 - 80000", "60k–80k + bonus", "Según experiencia", "Competitive". La moneda se gestiona con el selector de "Moneda".
+   */
   salary?: string | null;
   currency_code?: ('EUR' | 'USD') | null;
   'Ocultar salario'?: boolean | null;

@@ -44,7 +44,17 @@ export const Careers: CollectionConfig = {
       editor: lexicalEditor(),
     },
     { name: 'location', type: 'text', localized: true },
-    { name: 'salary', type: 'text' },
+
+    {
+      name: 'salary',
+      label: 'Salario (texto)',
+      type: 'text',
+      admin: {
+        description:
+          'Ejemplos: "100000", "60000 - 80000", "60k–80k + bonus", "Según experiencia", "Competitive". La moneda se gestiona con el selector de "Moneda".',
+      },
+    },
+
     {
       name: 'currency_code',
       label: 'Moneda',
@@ -55,7 +65,9 @@ export const Careers: CollectionConfig = {
       ],
       defaultValue: 'EUR',
     },
+
     { name: 'Ocultar salario', type: 'checkbox' },
+
     {
       name: 'requirements',
       type: 'array',
