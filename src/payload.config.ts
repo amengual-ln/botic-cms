@@ -24,18 +24,22 @@ import { en } from '@payloadcms/translations/languages/en'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-
 const allowedOrigins = [
-  getURL(),
-  'https://boticpartners.com',
   'https://www.boticpartners.com',
-  'https://acquisition.boticpartners.com',
+  'https://boticpartners.com',
+  'https://botic-cms.vercel.app',
+
+  ...(process.env.VERCEL_URL ? [`https://${process.env.VERCEL_URL}`] : []),
+
   'http://localhost:3000',
   'http://localhost:3001',
-  'http://localhost:3002',
-]
+].filter(Boolean)
 
 export default buildConfig({
+  serverURL:
+  process.env.PAYLOAD_PUBLIC_SERVER_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3001'),
+
   admin: {
     importMap: {
       baseDir: path.resolve(dirname),
