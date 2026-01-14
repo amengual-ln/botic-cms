@@ -37,9 +37,12 @@ const allowedOrigins = [
 
 export default buildConfig({
   serverURL:
-  process.env.PAYLOAD_PUBLIC_SERVER_URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3001'),
-
+    process.env.PAYLOAD_PUBLIC_SERVER_URL ||
+    (process.env.VERCEL_ENV === 'production'
+      ? 'https://botic-cms.vercel.app'
+      : process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : 'http://localhost:3001'),
   admin: {
     importMap: {
       baseDir: path.resolve(dirname),
